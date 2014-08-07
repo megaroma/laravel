@@ -1,0 +1,83 @@
+<?php
+class CrudController extends BaseController {
+
+	public function postGetlist() {
+		$page = Input::get('page', 1);
+		$sort = Input::get('sort', '');
+		$order = Input::get('order', '');
+		$model = Input::get('model', '');
+		if($model == '') return "Error";
+
+		$per_page = Config::get('view.per_page');
+		$data = array();
+		$filters= array();
+
+		$data['model'] = $model;
+		$data['sort'] = $sort;
+		$data['order'] = $order;
+
+		$model_data = $model::get_list($filters,$order,$sort,$page); 
+		$data['format'] = $model::$format;
+
+		foreach ($model_data['list'] as $i => $row) {
+			foreach ($row as $k => $v) {
+				if(!array_key_exists($k,$data['format']) ) continue;
+				$v=preg_replace_callback('/{([^}.\n]+)}/m',
+                                        function ($pok) use ($row) {
+                                        	return $row[$pok[1]];
+                                        }
+                                        ,
+										$data['format'][$k]['value']);
+
+				$data['list'][$i][$k] = $v;
+			}
+		}
+
+		//$data['list'] = $model_data['list'];
+		Paginator::setCurrentPage($page);
+		$data['pag'] = Paginator::make($model_data['list'],$model_data['total'], $per_page); 
+	
+		return View::make('crud.list',$data);	
+	}
+
+	public function postMaketdeditable() {
+		$model = Input::get('model', '');
+		$column = Input::get('column', '');
+		$id = Input::get('id', '');
+		$data = Input::get('data', '');	
+
+		$format = $model::$format;
+		if(isset($format[$column]['editable'])) {
+			$type = isset($format[$column]['editable']['type']) ? $format[$column]['editable']['type'] : 'textarea';
+			$item = $model::find($id);
+			$input_data['value'] = $item[$column];
+			$input_data['id'] = $id;
+			$input_data['column'] = $column;
+			$input_data['type'] = $type;
+			if($type == 'select') {
+				$model = $format[$column]['editable']['resource'];
+				$input_data['resource'] = $model::all();
+			}
+			return View::make('crud.input',$input_data);
+		} else {
+			return $data;
+		}
+
+	}
+
+	public function postSavelist() {
+		$data = Input::get('crud_td', ''); 
+		//Array ( [26] => Array ( [name] =>Hearing_Stimulus_Savings_Promotional_June_13_2011_ASHLAND ) ) 
+		$model = Input::get('model', '');
+
+		foreach ($data as $id => $d) {
+			$item = $model::find($id);
+			foreach ($d as $column => $value) {
+				$item->$column = $value;
+			}
+			$item->save();
+		}
+		$output = array('status' => 'ok');
+		return Response::json($output);
+	}
+}

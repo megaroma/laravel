@@ -1,0 +1,2 @@
+blade test 
+{{ $test }}
