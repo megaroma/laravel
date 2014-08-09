@@ -96,6 +96,7 @@ var form_data = $('#form_list_for_'+model).serializeArray();
 form_data.push({name: "model",value: model});
 $('#crud_save_cancel_panel_'+model).hide();
 $('#crud-ajax-loader-'+model).show();
+$('.crud_tr_'+model).removeClass('danger');
 $.ajax({
 type: "POST",
 url: get_url("crud/savelist"),
@@ -103,15 +104,14 @@ data: form_data,
 dataType: "json"
 })
 .done(function( data ) {
-if(data.status = 'ok') {
+if(data.status == 'ok') {
 	$('#form_for_'+model+' input[name=crud_changed]').val('');
 	$('#form_for_'+model).submit();
-
-	//alert ('ok');
 } else {
 	$('#crud_save_cancel_panel_'+model).show();
-	$('#crud-ajax-loader-'+model).hide();		
-	alert('error');
+	$('#crud-ajax-loader-'+model).hide();
+    $('#crud_tr_'+model+'_'+data.row_id).addClass('danger');
+    alert(data.message);
 }
 
 }).fail(function() {

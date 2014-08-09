@@ -25,7 +25,7 @@
 <tbody>
 
 @foreach($list as $l)
-<tr>
+<tr id="crud_tr_{{$model}}_{{$l['id']}}" class="crud_tr_{{$model}}">
    @foreach($l as $k => $d)
    	  @if(array_key_exists($k,$format))
    		<td

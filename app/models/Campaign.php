@@ -12,7 +12,8 @@ public static $format = array (
 		'title' => 'Name',
 		'value' => '{name}',
 		'editable' => array(
-			'type' => 'input'
+			'type' => 'input',
+			'validate' => 'required'
 			)
 		),
 	'priority' => array(

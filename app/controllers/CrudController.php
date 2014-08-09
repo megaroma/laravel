@@ -67,9 +67,33 @@ class CrudController extends BaseController {
 
 	public function postSavelist() {
 		$data = Input::get('crud_td', ''); 
-		//Array ( [26] => Array ( [name] =>Hearing_Stimulus_Savings_Promotional_June_13_2011_ASHLAND ) ) 
 		$model = Input::get('model', '');
+		$format = $model::$format;
+		//validate
+		foreach ($data as $id => $d) {
+			$val_data = array();
+			foreach ($d as $column => $value) {
+				if(isset($format[$column]['editable']['validate'])) {
+					$val_data[0][$column] = $value;
+					$val_data[1][$column] = $format[$column]['editable']['validate'];					
+				}
+			}
+			if (count($val_data) > 0 ) {
 
+				$validator = Validator::make($val_data[0],$val_data[1]);
+				if ($validator->fails()) {
+					$messages = $validator->messages();
+					$mess = '';
+					foreach ($messages->all() as $message) {
+   				 		$mess .=  $message.' ';
+					}
+					$output = array('status' => 'error','row_id' => $id,'message' => $mess);
+					return Response::json($output);
+				}
+			}
+		}
+
+		//save
 		foreach ($data as $id => $d) {
 			$item = $model::find($id);
 			foreach ($d as $column => $value) {
