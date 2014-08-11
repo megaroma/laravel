@@ -6,9 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Admin\\AdminController' => $baseDir . '/app/controllers/admin/AdminController.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'Campaign' => $baseDir . '/app/models/Campaign.php',
     'CrudController' => $baseDir . '/app/controllers/CrudController.php',
+    'CrudModel' => $baseDir . '/app/traits/CrudModel.php',
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
     'HomeController' => $baseDir . '/app/controllers/HomeController.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',

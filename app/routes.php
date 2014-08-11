@@ -27,4 +27,14 @@ Route::controller('crud', 'CrudController');
 //Route::resource('mega/home/{id?}', 'MegaController');
 
 
+Route::group(
+    array('prefix' => 'admin'), 
+    function() {
+        Route::controller('admin', 'Admin\AdminController');
+    }
+);
+
+
+
+
 Route::resource('home/{id?}', 'HomeController@showWelcome');
