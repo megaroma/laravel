@@ -39,6 +39,27 @@ public $format = ['Campaign' => array (
 
 	)];
 
+public $filters = array(
+	'Campaign' => array(
+		'assigned_user_id' => array(
+			'title' => 'User',
+			'selectors' => array('=','!='),
+			'type' => 'select',
+			'resource' => 'User'
+
+			),
+		'priority' => array(
+			'title' => 'Priority',
+			'selectors' => array('=','!=','>','<'),
+			'type' => 'number'
+
+			)
+
+
+
+		)
+
+	);
 
 
 public function getIndex() {
@@ -51,6 +72,8 @@ public function getIndex() {
 
 		'crud_auto_filter' => true
 		);
+
+	$data['filters'] = $this->filters['Campaign'];
 
 	$this->layout->content = \View::make('crud.view',$data);	
 }

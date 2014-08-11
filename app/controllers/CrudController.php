@@ -1,7 +1,7 @@
 <?php
 class CrudController extends Controller {
 
-	public function postGetlist() {
+	public function postGetlist() { 
 		$page = Input::get('page', 1);
 		$sort = Input::get('sort', '');
 		$order = Input::get('order', '');
@@ -34,6 +34,8 @@ class CrudController extends Controller {
 				$data['list'][$i][$k] = $v;
 			}
 		}
+
+		if (count($model_data['list']) < 1) return "No data"; 
 
 		//$data['list'] = $model_data['list'];
 		Paginator::setCurrentPage($page);
