@@ -17,7 +17,7 @@ if (changed == 1 ) {
 	}
 }
 $('#crud-ajax-loader-'+model).show();
-$.post( get_url("crud/getlist"),
+$.post( window.location.href + "/getlist",
 		{page: page,sort: sort, order: order,model: model} , 
 		function( data ) {
 	$('#list_for_'+model).html(data);
@@ -70,7 +70,7 @@ $('.container').on('dblclick','.scrud_editable_td', function (event) {
     var id = $(self).data('id');
     var value = $(self).html();
     $('#form_for_'+model+' input[name=crud_changed]').val('1');
-    $.post( get_url("crud/maketdeditable"),
+    $.post( window.location.href + "/maketdeditable",
 		{column: column,model: model,id: id, data: value} , 
 		function( data ) {
 	    $(self).html(data);
@@ -99,7 +99,7 @@ $('#crud-ajax-loader-'+model).show();
 $('.crud_tr_'+model).removeClass('danger');
 $.ajax({
 type: "POST",
-url: get_url("crud/savelist"),
+url: window.location.href + "/savelist",
 data: form_data,
 dataType: "json"
 })

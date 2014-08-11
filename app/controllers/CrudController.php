@@ -1,23 +1,25 @@
 <?php
-class CrudController extends BaseController {
+class CrudController extends Controller {
 
 	public function postGetlist() {
 		$page = Input::get('page', 1);
 		$sort = Input::get('sort', '');
 		$order = Input::get('order', '');
 		$model = Input::get('model', '');
+		$filters= Input::get('filters', array());
 		if($model == '') return "Error";
 
 		$per_page = Config::get('view.per_page');
 		$data = array();
-		$filters= array();
+		
 
 		$data['model'] = $model;
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
 		$model_data = $model::get_list($filters,$order,$sort,$page); 
-		$data['format'] = $model::$format;
+		$data['format'] = isset($this->format[$model]) ? $this->format[$model] : '';
+		if ($data['format'] == '') return "Error"; 
 
 		foreach ($model_data['list'] as $i => $row) {
 			foreach ($row as $k => $v) {
@@ -46,7 +48,8 @@ class CrudController extends BaseController {
 		$id = Input::get('id', '');
 		$data = Input::get('data', '');	
 
-		$format = $model::$format;
+		$format = isset($this->format[$model]) ? $this->format[$model] : '';
+		if ($format == '') return $data;
 		if(isset($format[$column]['editable'])) {
 			$type = isset($format[$column]['editable']['type']) ? $format[$column]['editable']['type'] : 'textarea';
 			$item = $model::find($id);
@@ -68,7 +71,8 @@ class CrudController extends BaseController {
 	public function postSavelist() {
 		$data = Input::get('crud_td', ''); 
 		$model = Input::get('model', '');
-		$format = $model::$format;
+		$format = isset($this->format[$model]) ? $this->format[$model] : '';
+		if ($format == '') return Response::json(array('status' => 'ok'));
 		//validate
 		foreach ($data as $id => $d) {
 			$val_data = array();
@@ -104,4 +108,13 @@ class CrudController extends BaseController {
 		$output = array('status' => 'ok');
 		return Response::json($output);
 	}
+
+	protected function setupLayout()
+	{
+		if ( ! is_null($this->layout))
+		{
+			$this->layout = View::make($this->layout);
+		}
+	}
+
 }

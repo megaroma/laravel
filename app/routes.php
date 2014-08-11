@@ -23,7 +23,7 @@ Route::get('/test', function()
 
 
 Route::controller('mega', 'MegaController');
-Route::controller('crud', 'CrudController');
+
 //Route::resource('mega/home/{id?}', 'MegaController');
 
 
