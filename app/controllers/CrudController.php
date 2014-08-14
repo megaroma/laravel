@@ -17,9 +17,11 @@ class CrudController extends Controller {
 		$data['sort'] = $sort;
 		$data['order'] = $order;
 
+		$filters = $this->check_filters($model,$filters);
 		$model_data = $model::get_list($filters,$order,$sort,$page); 
 		$data['format'] = isset($this->format[$model]) ? $this->format[$model] : '';
 		if ($data['format'] == '') return "Error"; 
+		if (count($model_data['list']) < 1) return "No data"; 
 
 		foreach ($model_data['list'] as $i => $row) {
 			foreach ($row as $k => $v) {
@@ -35,12 +37,13 @@ class CrudController extends Controller {
 			}
 		}
 
-		if (count($model_data['list']) < 1) return "No data"; 
 
 		//$data['list'] = $model_data['list'];
 		Paginator::setCurrentPage($page);
 		$data['pag'] = Paginator::make($model_data['list'],$model_data['total'], $per_page); 
 	
+		$data['filters_status']  = Crud::get_filters_status($filters,$this->filters[$model]);
+
 		return View::make('crud.list',$data);	
 	}
 
@@ -115,9 +118,10 @@ class CrudController extends Controller {
 		$model = Input::get('model', '');
 		$id =  Input::get('id', '');
 		$i = Input::get('i', '');
-		if (($model != '') && ($id != '') && ($i != '') && (isset($this->filters[$model][$id]))) {
+		$filters = $this->get_filters($model);
+		if (($model != '') && ($id != '') && ($i != '') && (isset($filters[$id]))) {
 			$data = array();
-			$filter = $this->filters[$model][$id];
+			$filter = $filters[$id];
 			$data['name'] = $filter['title'];
 			$data['type'] = $filter['type'];
 			$data['model'] = $model;
@@ -131,6 +135,14 @@ class CrudController extends Controller {
 			return View::make('crud.filter',$data);
 		}
 
+	}
+
+	public function get_filters($model) {
+		return $this->filters[$model];
+	}
+
+	public function check_filters($model,$filters) {
+		return $filters;
 	}
 
 	protected function setupLayout()

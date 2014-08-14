@@ -45,7 +45,7 @@
 </tbody>
 </table>
 {{ Form::close() }}
-
+<input type="hidden" id="crud_{{$model}}_list_filters_status" value="{{$filters_status}}">
 <table>
 <tr>
 <td style="padding: 0px 10px; 0px 10px">

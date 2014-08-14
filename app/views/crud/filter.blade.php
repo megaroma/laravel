@@ -8,7 +8,7 @@
     </select>
   </div>  
 
-  <div class="col-sm-8">
+  <div class="col-sm-6">
       @if($type == 'text')
       <input type="text" class="form-control input-sm" name="filter[{{$i}}][{{$id}}][data]">
       @elseif($type == 'number')

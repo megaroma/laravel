@@ -18,11 +18,29 @@ if (changed == 1 ) {
 	}
 }
 $('#crud-ajax-loader-'+model).show();
-$.post( window.location.href + "/getlist",
+var url=window.location.href.split('?');
+var url_get_data = '';
+if (typeof url[1] != 'undefined') {
+  url_get_data = '?'+ url[1];
+}
+$.post( url[0] + "/getlist"+url_get_data,
 		//{page: page,sort: sort, order: order,model: model} , 
         form_data,
 		function( data ) {
 	$('#list_for_'+model).html(data);
+    var filters_status = $('#crud_'+model+'_list_filters_status').val();
+    if(filters_status == "") {
+        $('#crud_'+model+'_filters_status').text('Not filtered');
+        $('#crud_'+model+'_filters_status_info').attr('data-original-title','Not filtered');        
+        $('#crud_'+model+'_filters_status_info').attr('data-content','press the plus button to add filters.');        
+    } else {
+        $('#crud_'+model+'_filters_status').text('Filtered');
+        $('#crud_'+model+'_filters_status_info').attr('data-original-title','Filtered by:');        
+        $('#crud_'+model+'_filters_status_info').attr('data-content',filters_status);        
+    }
+    $('#crud_'+model+'_show_filters_panel').show();
+    $('#crud_'+model+'_filters_panel').hide();
+
 });
 event.preventDefault();
 return false;
@@ -72,7 +90,12 @@ $('.container').on('dblclick','.scrud_editable_td', function (event) {
     var id = $(self).data('id');
     var value = $(self).html();
     $('#form_for_'+model+' input[name=crud_changed]').val('1');
-    $.post( window.location.href + "/maketdeditable",
+    var url=window.location.href.split('?');
+    var url_get_data = '';
+    if (typeof url[1] != 'undefined') {
+        url_get_data = '?'+ url[1];
+    }
+    $.post( url[0] + "/maketdeditable"+url_get_data,    
 		{column: column,model: model,id: id, data: value} , 
 		function( data ) {
 	    $(self).html(data);
@@ -99,9 +122,14 @@ form_data.push({name: "model",value: model});
 $('#crud_save_cancel_panel_'+model).hide();
 $('#crud-ajax-loader-'+model).show();
 $('.crud_tr_'+model).removeClass('danger');
+var url=window.location.href.split('?');
+var url_get_data = '';
+if (typeof url[1] != 'undefined') {
+    url_get_data = '?'+ url[1];
+}
 $.ajax({
 type: "POST",
-url: window.location.href + "/savelist",
+url: url[0] + "/savelist"+url_get_data,
 data: form_data,
 dataType: "json"
 })
@@ -131,7 +159,12 @@ var id = $(this).data('id');
 var model = $(this).data('model');
 var filter_count = $('#form_for_'+model+' input[name=crud_filters_count]').val();
 filter_count = parseInt( filter_count ) + 1;
-    $.post( window.location.href + "/addfilter",
+var url=window.location.href.split('?');
+var url_get_data = '';
+if (typeof url[1] != 'undefined') {
+  url_get_data = '?'+ url[1];
+}
+$.post( url[0] + "/addfilter"+url_get_data,
         {id: id,model: model,i: filter_count } , 
         function( data ) {
         $('#crud_'+model+'_filters').append(data);
@@ -161,6 +194,15 @@ var model = $(this).data('model');
 $('#form_for_'+model).submit();
 });
 
+
+//---Show filters-------------------------------------------
+$('.container').on('click','.crud_show_filters_btn', function (event) {
+event.preventDefault();
+var model = $(this).data('model');
+$('#crud_'+model+'_show_filters_panel').hide();
+$('#crud_'+model+'_filters_panel').show();
+
+});
 
 
 

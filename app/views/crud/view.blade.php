@@ -1,9 +1,22 @@
 @section('content')
 <div class="panel panel-default">
-  <div class="panel-body">
-    <table class="table">
+<div class="panel-heading">
+    <div class="row">
+        <div class="col-sm-4">{{ $crud_title }}</div>
+        <div class="col-sm-4 col-sm-offset-4" id="crud_{{$crud_model}}_show_filters_panel">
+            <button type="button" class="crud_show_filters_btn btn btn-success btn-xs" data-model="{{$crud_model}}">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+            <span id="crud_{{$crud_model}}_filters_status">Not filtered</span>
+            <span id="crud_{{$crud_model}}_filters_status_info" class="label label-info" data-container="body" data-toggle="popover" data-placement="bottom" data-content="
+press the plus button to add filters." data-trigger="hover" title="Not filtered" >i</span>
+        </div>
+    </div>    
+</div>
+  <!--<div class="panel-body">-->
+    <table class="table" id="crud_{{$crud_model}}_filters_panel" style="display:none;">
         <tr>
-    <td>{{ $crud_title }}</td>
+    <td>{{-- $crud_title --}}</td>
     <td>
     {{ Form::open(array('class'=>'crud_form form-horizontal','id' => 'form_for_'.$crud_model , 'role' => 'form' )) }}
     	{{ Form::hidden('crud_model', $crud_model ) }}
@@ -18,7 +31,7 @@
 
 @if((isset($filters))&&(count($filters)>0))
     <div class="dropdown">
-        <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownmenu" data-toggle="dropdown">
+        <button class="btn btn-default btn-sm dropdown-toggle" type="button" id="dropdownmenu" data-toggle="dropdown">
             Add filter
             <span class="caret"></span>
         </button>
@@ -36,12 +49,12 @@
     </td>
     <td> 
         @if((isset($crud_filter_button)) && $crud_filter_button)
-        <button class="crud_filter_btn btn btn-default" data-model="{{$crud_model}}">Filter</button>
+        <button class="crud_filter_btn btn btn-primary" data-model="{{$crud_model}}">Filter</button>
         @endif
     </td>
 </tr>
 </table>
-  </div>
+  <!--</div>-->
 </div>
 @endif
 <div id="list_for_{{$crud_model}}">
@@ -52,6 +65,7 @@ $( document ).ready(function() {
 @if(isset($crud_auto_filter) && $crud_auto_filter)
 $('#form_for_{{$crud_model}}').submit();
 @endif
+$('.label').popover();
 });
 
 

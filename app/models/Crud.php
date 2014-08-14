@@ -42,4 +42,16 @@ class Crud {
 		}
 	}
 
+	public static function get_filters_status($filters,$filters_map) {
+		$status = "";
+		foreach($filters as $filter) {
+			$field = key($filter);
+			if(isset($filters_map[$field])) {
+				$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' ";
+			}
+		}
+		return $status;
+
+	}
+
 }
