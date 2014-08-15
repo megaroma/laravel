@@ -11,25 +11,39 @@
     	{{ Form::hidden('crud_order', $crud_order ) }}
     	{{ Form::hidden('crud_page', $crud_page ) }}
     	{{ Form::hidden('crud_changed', "" ) }}
+        {{ Form::hidden('crud_filters_count', count($filters) ) }}
 
-    <div class="form-group">
-        <label class ="col-sm-2 control-label">
-            <select class="form-control input-xs">
-                <option>
-        </label>
-        <div class = "col-sm-10">
-            <button type="submit" class="btn btn-default btn-xs">Add filter</button>
-        </div>
+<div id="crud_{{$crud_model}}_filters" ></div>
+
+
+@if((isset($filters))&&(count($filters)>0))
+    <div class="dropdown">
+        <button class="btn btn-default btn-xs dropdown-toggle" type="button" id="dropdownmenu" data-toggle="dropdown">
+            Add filter
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownmenu">
+            @foreach($filters as $id => $filter)
+            <li role="presentation">
+                <a role="menuitem" tabindex="-1" href="#" class="crud_add_filter" data-id="{{$id}}" data-model="{{$crud_model}}">
+                    {{$filter['title']}}
+                </a>
+            </li>
+            @endforeach
+        </ul>
     </div>
-
     {{ Form::close() }}
     </td>
-    <td>Button</td>
+    <td> 
+        @if((isset($crud_filter_button)) && $crud_filter_button)
+        <button class="crud_filter_btn btn btn-default" data-model="{{$crud_model}}">Filter</button>
+        @endif
+    </td>
 </tr>
 </table>
   </div>
 </div>
-
+@endif
 <div id="list_for_{{$crud_model}}">
 </div>
 

@@ -2,11 +2,11 @@
 class CrudController extends Controller {
 
 	public function postGetlist() { 
-		$page = Input::get('page', 1);
-		$sort = Input::get('sort', '');
-		$order = Input::get('order', '');
-		$model = Input::get('model', '');
-		$filters= Input::get('filters', array());
+		$page = Input::get('crud_page', 1);
+		$sort = Input::get('crud_sort', '');
+		$order = Input::get('crud_order', '');
+		$model = Input::get('crud_model', '');
+		$filters= Input::get('filter', array());
 		if($model == '') return "Error";
 
 		$per_page = Config::get('view.per_page');
@@ -109,6 +109,28 @@ class CrudController extends Controller {
 		}
 		$output = array('status' => 'ok');
 		return Response::json($output);
+	}
+
+	public function postAddfilter() {
+		$model = Input::get('model', '');
+		$id =  Input::get('id', '');
+		$i = Input::get('i', '');
+		if (($model != '') && ($id != '') && ($i != '') && (isset($this->filters[$model][$id]))) {
+			$data = array();
+			$filter = $this->filters[$model][$id];
+			$data['name'] = $filter['title'];
+			$data['type'] = $filter['type'];
+			$data['model'] = $model;
+			$data['id'] = $id;
+			$data['i'] = $i;
+			if(($filter['type'] == 'select') && (isset($filter['resource']))) {
+				$r_model = $filter['resource'];
+				$data['resource'] = $r_model::all();
+			} 
+			$data['selectors'] = Crud::get_selectors($filter['selectors']);
+			return View::make('crud.filter',$data);
+		}
+
 	}
 
 	protected function setupLayout()

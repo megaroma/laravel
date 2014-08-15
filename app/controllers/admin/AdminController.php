@@ -34,6 +34,11 @@ public $format = ['Campaign' => array (
 			'type' => 'select',
 			'resource' => 'User'
 			)	
+		),
+	'created_at' => array(
+		'title' => 'Created',
+		'value' => '{created_at}'
+
 		)
 
 
@@ -43,17 +48,24 @@ public $filters = array(
 	'Campaign' => array(
 		'assigned_user_id' => array(
 			'title' => 'User',
-			'selectors' => array('=','!='),
+			'selectors' => '=,!=',
 			'type' => 'select',
 			'resource' => 'User'
 
 			),
 		'priority' => array(
 			'title' => 'Priority',
-			'selectors' => array('=','!=','>','<'),
+			'selectors' => '=,!=,>,<',
 			'type' => 'number'
 
+			),
+		'created_at' => array(
+			'title' => 'Created',
+			'selectors' => 'dt_equal',
+			'type' => 'date'
+
 			)
+
 
 
 
@@ -70,7 +82,8 @@ public function getIndex() {
 		'crud_order' => '',
 		'crud_page' => '1',
 
-		'crud_auto_filter' => true
+		'crud_auto_filter' => true,
+		'crud_filter_button' => true
 		);
 
 	$data['filters'] = $this->filters['Campaign'];

@@ -11,6 +11,7 @@
 </title>  
 {{ HTML::style('public/bs/css/bootstrap.min.css') }}
 {{ HTML::style('public/bs/css/bootstrap-theme.min.css') }}
+{{ HTML::style('public/css/bootstrap-datetimepicker.min.css') }}
 <style>
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
   background-color: #eeeeea;
@@ -18,7 +19,9 @@
 </style>
 {{ HTML::script('public/js/helpers.js') }}
 {{ HTML::script('public/js/jquery-1.11.1.min.js') }}
+{{ HTML::script('public/js/moment.js') }}
 {{ HTML::script('public/bs/js/bootstrap.min.js') }}
+{{ HTML::script('public/js/bootstrap-datetimepicker.min.js') }}
 {{ HTML::script('public/js/crud.js') }}
 </head>    
 <body>

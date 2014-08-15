@@ -4,9 +4,10 @@ $( document ).ready(function() {
 $(".crud_form").submit(function( event ) {
 var form_id = $(this).attr('id');	
 var model = form_id.split('_')[2];
-var page = $('#'+form_id+' input[name=crud_page]').val();
-var sort = $('#'+form_id+' input[name=crud_sort]').val();
-var order = $('#'+form_id+' input[name=crud_order]').val();
+var form_data = $('#'+form_id).serializeArray();
+//var page = $('#'+form_id+' input[name=crud_page]').val();
+//var sort = $('#'+form_id+' input[name=crud_sort]').val();
+//var order = $('#'+form_id+' input[name=crud_order]').val();
 var changed = $('#'+form_id+' input[name=crud_changed]').val();
 if (changed == 1 ) {	
 	if(confirm('You have unsaved changes on this page. Do you want to leave this page and discard your changes?')) {
@@ -18,7 +19,8 @@ if (changed == 1 ) {
 }
 $('#crud-ajax-loader-'+model).show();
 $.post( window.location.href + "/getlist",
-		{page: page,sort: sort, order: order,model: model} , 
+		//{page: page,sort: sort, order: order,model: model} , 
+        form_data,
 		function( data ) {
 	$('#list_for_'+model).html(data);
 });
@@ -119,11 +121,47 @@ $('#crud_save_cancel_panel_'+model).show();
 $('#crud-ajax-loader-'+model).hide();	
 alert("Something Went Wrong. Please Try again Later" );
 });
-
-
-
 return false;
 });
+
+//----Add filter--------------------------------------------
+$('.container').on('click','.crud_add_filter', function (event) {
+event.preventDefault();
+var id = $(this).data('id');
+var model = $(this).data('model');
+var filter_count = $('#form_for_'+model+' input[name=crud_filters_count]').val();
+filter_count = parseInt( filter_count ) + 1;
+    $.post( window.location.href + "/addfilter",
+        {id: id,model: model,i: filter_count } , 
+        function( data ) {
+        $('#crud_'+model+'_filters').append(data);
+        $('#form_for_'+model+' input[name=crud_filters_count]').val(filter_count);
+        $('.datepicker').datetimepicker({
+                    pickTime: false
+                });
+    });
+
+
+return true;
+});
+
+//---Delete filter--------------------------------------------
+$('.container').on('click','.crud_del_filter_btn', function (event) {
+event.preventDefault();
+var i = $(this).data('i');
+var model = $(this).data('model');
+$('#crud_filter_'+model+'_'+i).remove();
+});
+
+
+//----filter-------------------------------------------------
+$('.container').on('click','.crud_filter_btn', function (event) {
+event.preventDefault();
+var model = $(this).data('model');
+$('#form_for_'+model).submit();
+});
+
+
 
 
 
