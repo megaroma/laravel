@@ -5,6 +5,8 @@ class Crud {
 		'!=' => array('name' => '!=', 'code' => '{field} <> {data}' ),
 		'<' => array('name' => '<', 'code' => '{field} < {data}' ),
 		'>' => array('name' => '>', 'code' => '{field} > {data}' ),
+		'btw' => array('name' => 'between', 'code' => '{field} between {data} and {data2}' ),		
+		'dt_btw' => array('name'=> 'between', 'code' => "DATE({field}) between STR_TO_DATE({data},'%m/%d/%Y') and STR_TO_DATE({data2},'%m/%d/%Y') "),		
 		'dt_equal' => array('name'=> '=', 'code' => "DATE({field}) = STR_TO_DATE({data},'%m/%d/%Y') ")		
 
 		);
@@ -46,12 +48,31 @@ class Crud {
 		$status = "";
 		foreach($filters as $filter) {
 			$field = key($filter);
-			if(isset($filters_map[$field])) {
+			if(isset($filters_map[$field]) && ($filters_map[$field]['type'] != 'static') ) {
 				$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' ";
 			}
 		}
 		return $status;
+	}
 
+
+	public static function check_filters($filters_map,$filters) {
+		$data = array();
+		foreach ($filters as $i => $filter) {
+			$field = key($filter);
+			if(isset($filters_map[$field]) && ($filters_map[$field]['type'] != 'static') ) {
+				$data[] = $filter;
+			}
+		}
+		foreach ($filters_map as $field => $map) {
+			if($map['type'] == 'static') {
+				$data[][$field] = array(
+						'selector' => $map['selector'],
+						'data' => $map['value']
+					); 
+			}
+		}
+		return $data;
 	}
 
 }
