@@ -53,12 +53,12 @@ public $filters = array(
 			'resource' => 'User'
 
 			),
-		'priority' => array(
+		/*'priority' => array(
 			'title' => 'Priority',
 			'selectors' => '=,!=,>,<',
 			'type' => 'number'
 
-			),
+			), */
 		'created_at' => array(
 			'title' => 'Created',
 			'selectors' => 'dt_btw,dt_equal',
@@ -68,8 +68,14 @@ public $filters = array(
 		'customer_id' => array(
 			'type' => 'static',
 			'selector' => '=',
-			'value' => '3'
-			)
+			'value' => '1'
+			),
+		'priority' => array(
+			'title' => 'Priority is 1',
+			'selectors' => '=',
+			'type' => 'checkbox'
+
+			)		
 
 
 

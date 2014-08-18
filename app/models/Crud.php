@@ -51,7 +51,8 @@ class Crud {
 		$status = "";
 		foreach($filters as $filter) {
 			$field = key($filter);
-			if(isset($filters_map[$field]) && ($filters_map[$field]['type'] != 'static') && ($filter[$field]['data'] != '') ) {
+			if(isset($filters_map[$field]) && ($filters_map[$field]['type'] != 'static') 
+				&& isset($filter[$field]['data']) && ($filter[$field]['data'] != '') ) {
 				$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' ";
 			}
 		}

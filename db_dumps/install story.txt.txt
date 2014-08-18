@@ -1,0 +1,12 @@
+ 3 down vote
+	
+
+You can use the PHPExcel Composer package. 
+Just add 
+"require": {
+    "phpexcel/phpexcel": "dev-master"
+}
+ to your composer.json 
+and enter composer update. This way the library will be "installed"
+ and you can use it as normal (for example $objPHPExcel = new PHPExcel();) 
+No need for manual includes etc.

@@ -1,4 +1,7 @@
 <div class="form-group" id="crud_filter_{{$model}}_{{$i}}">
+  @if($type == 'checkbox')
+  <div class="col-sm-3">{{$name}}</div><input type="hidden" name="filter[{{$i}}][{{$id}}][selector]" value="{{$selectors[0]['id']}}" >
+  @else
   <div class="col-sm-1">{{$name}}</div>
   <div class="col-sm-2">
     <select class="crud_filter_selector form-control input-sm" name="filter[{{$i}}][{{$id}}][selector]" data-i="{{$i}}" data-model="{{$model}}">
@@ -6,7 +9,8 @@
       <option value="{{$option['id']}}">{{$option['name']}}</option>
     @endforeach
     </select>
-  </div>  
+  </div>
+  @endif  
 
   @if($type == 'text')
   <div class="col-sm-6">
@@ -15,6 +19,12 @@
   @elseif($type == 'number')
   <div class="col-sm-6">  
       <input type="text" class="form-control input-sm" name="filter[{{$i}}][{{$id}}][data]">
+  </div>
+  @elseif($type == 'checkbox')
+  <div class="col-sm-6 class="checkbox"">
+    <label>
+      <input type="checkbox" name="filter[{{$i}}][{{$id}}][data]" value="1" checked >
+    </label>
   </div>
   @elseif($type=='select')
   <div class="col-sm-6">  
