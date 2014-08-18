@@ -37,11 +37,13 @@ press the plus button to add filters." data-trigger="hover" title="Not filtered"
         </button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownmenu">
             @foreach($filters as $id => $filter)
+            @if($filter['type'] != 'static')
             <li role="presentation">
                 <a role="menuitem" tabindex="-1" href="#" class="crud_add_filter" data-id="{{$id}}" data-model="{{$crud_model}}">
                     {{$filter['title']}}
                 </a>
             </li>
+            @endif
             @endforeach
         </ul>
     </div>

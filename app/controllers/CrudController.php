@@ -119,7 +119,7 @@ class CrudController extends Controller {
 		$id =  Input::get('id', '');
 		$i = Input::get('i', '');
 		$filters = $this->get_filters($model);
-		if (($model != '') && ($id != '') && ($i != '') && (isset($filters[$id]))) {
+		if (($model != '') && ($id != '') && ($i != '') && (isset($filters[$id])) && ($filters[$id]['type'] != 'static') ) {
 			$data = array();
 			$filter = $filters[$id];
 			$data['name'] = $filter['title'];
@@ -142,7 +142,22 @@ class CrudController extends Controller {
 	}
 
 	public function check_filters($model,$filters) {
-		return $filters;
+		$data = array();
+		$filters_conf = $this->get_filters($model);
+		foreach ($filters as $filter) {
+			$field = key($filter);
+			if (isset($filters_conf[$field]) && ($filters_conf[$field]['type'] != 'static' ))
+				$data[] = $filter;
+		}
+		foreach ($filters_conf as $field => $param) {
+			if($param['type'] == 'static') {
+				$data[][$field] = array(
+						'selector' => $param['selector'],
+						'data' =>  $param['value']
+					);
+			}
+		}
+		return $data;
 	}
 
 	protected function setupLayout()

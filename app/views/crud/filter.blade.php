@@ -8,25 +8,39 @@
     </select>
   </div>  
 
-  <div class="col-sm-6">
+  
       @if($type == 'text')
-      <input type="text" class="form-control input-sm" name="filter[{{$i}}][{{$id}}][data]">
+      <div class="col-sm-6">
+        <input type="text" class="form-control input-sm" name="filter[{{$i}}][{{$id}}][data]">
+      </div>
       @elseif($type == 'number')
-      <input type="text" class="form-control input-sm" name="filter[{{$i}}][{{$id}}][data]">
+      <div class="col-sm-6">
+        <input type="text" class="form-control input-sm" name="filter[{{$i}}][{{$id}}][data]">
+      </div>
       @elseif($type=='select')
-      <select  class="form-control input-sm" name="filter[{{$i}}][{{$id}}][data]">
-       @foreach($resource as $r)
-       <option value="{{$r['id']}}">{{$r['name']}}</option>
-       @endforeach
-      </select>
+      <div class="col-sm-6">
+        <select  class="form-control input-sm" name="filter[{{$i}}][{{$id}}][data]">
+        @foreach($resource as $r)
+          <option value="{{$r['id']}}">{{$r['name']}}</option>
+        @endforeach
+        </select>
+      </div>
       @elseif($type=='date')
+      <div class="col-sm-3">
                <div class='datepicker input-group date'>
                     <input type='text' class="form-control" placeholder="dd/mm/yyyy" name="filter[{{$i}}][{{$id}}][data]" />
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
+        </div>
+        <div class="col-sm-3">
+              <div class='datepicker input-group date'>
+                    <input type='text' class="form-control" placeholder="dd/mm/yyyy" name="filter[{{$i}}][{{$id}}][data2]" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>        
+        </div>        
       @endif
-  </div>
 
   
   <div class="col-sm-1">

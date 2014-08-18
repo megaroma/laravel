@@ -5,7 +5,9 @@ class Crud {
 		'!=' => array('name' => '!=', 'code' => '{field} <> {data}' ),
 		'<' => array('name' => '<', 'code' => '{field} < {data}' ),
 		'>' => array('name' => '>', 'code' => '{field} > {data}' ),
+		'btw' => array('name' => 'between', 'code' => '{field} between {data} and {data2} ' ),
 		'dt_equal' => array('name'=> '=', 'code' => "DATE({field}) = STR_TO_DATE({data},'%m/%d/%Y') ")		
+		'dt_btw' => array('name'=> 'between', 'code' => "DATE({field}) = STR_TO_DATE({data},'%m/%d/%Y') and STR_TO_DATE({data2},'%m/%d/%Y') ")		
 
 		);
 
@@ -27,10 +29,13 @@ class Crud {
 			$field = key($filter);
 			$selector = $filter[$field]['selector'];
 			$data = $filter[$field]['data'];
+			$data2 = $filter[$field]['data2'];
+
 			if($data != '') {
 				$code = self::$selectors[$selector]['code'];
 				$code = str_replace("{field}", $field, $code);
 				$code = str_replace("{data}", DB::connection()->getPdo()->quote($data), $code);
+				$code = str_replace("{data2}", DB::connection()->getPdo()->quote($data2), $code);
 				$sql_arr[] = $code;
 				//$sql_arr[] = $field.' '.self::$selectors[$selector]['code'].' '.DB::connection()->getPdo()->quote($data);  
 			}
@@ -46,7 +51,7 @@ class Crud {
 		$status = "";
 		foreach($filters as $filter) {
 			$field = key($filter);
-			if(isset($filters_map[$field])) {
+			if(isset($filters_map[$field]) && ($filters_map[$field]['type'] != 'static')) {
 				$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' ";
 			}
 		}

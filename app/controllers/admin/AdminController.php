@@ -64,8 +64,12 @@ public $filters = array(
 			'selectors' => 'dt_equal',
 			'type' => 'date'
 
+			),
+		'customer_id' => array(
+			'type' => 'static',
+			'selector' => '=',
+			'value' => '3'
 			)
-
 
 
 
