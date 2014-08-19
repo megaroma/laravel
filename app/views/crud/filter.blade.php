@@ -1,7 +1,7 @@
 <div class="form-group" id="crud_filter_{{$model}}_{{$i}}">
   <div class="col-sm-1">{{$name}}</div>
   <div class="col-sm-2">
-    <select class="form-control input-sm" name="filter[{{$i}}][{{$id}}][selector]">
+    <select class="crud_filter_selector form-control input-sm" name="filter[{{$i}}][{{$id}}][selector]" data-i="{{$i}}" data-model="{{$model}}">
     @foreach($selectors as $option)
       <option value="{{$option['id']}}">{{$option['name']}}</option>
     @endforeach
@@ -25,9 +25,16 @@
       </select>
   </div>
   @elseif($type=='date')
-  <div class="col-sm-6">
+  <div class="{{ $data_class }}" id="crud_filter_data_{{$model}}_{{$i}}">
                <div class='datepicker input-group date'>
                     <input type='text' class="form-control" placeholder="dd/mm/yyyy" name="filter[{{$i}}][{{$id}}][data]" />
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+  </div>
+  <div class="col-sm-3" style="{{ $data2_style }}" id="crud_filter_data2_{{$model}}_{{$i}}">
+               <div class='datepicker input-group date'>
+                    <input type='text' class="form-control" placeholder="dd/mm/yyyy" name="filter[{{$i}}][{{$id}}][data2]" />
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>

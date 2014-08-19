@@ -5,6 +5,7 @@ $(".crud_form").submit(function( event ) {
 var form_id = $(this).attr('id');	
 var model = form_id.split('_')[2];
 var form_data = $('#'+form_id).serializeArray();
+form_data.push({name: "crud_action",value: "getlist"});
 //var page = $('#'+form_id+' input[name=crud_page]').val();
 //var sort = $('#'+form_id+' input[name=crud_sort]').val();
 //var order = $('#'+form_id+' input[name=crud_order]').val();
@@ -18,12 +19,7 @@ if (changed == 1 ) {
 	}
 }
 $('#crud-ajax-loader-'+model).show();
-var url=window.location.href.split('?');
-var url_get_data = '';
-if (typeof url[1] != 'undefined') {
-  url_get_data = '?'+ url[1];
-}
-$.post( url[0] + "/getlist"+url_get_data,
+$.post( window.location.href,
 		//{page: page,sort: sort, order: order,model: model} , 
         form_data,
 		function( data ) {
@@ -90,13 +86,8 @@ $('.container').on('dblclick','.scrud_editable_td', function (event) {
     var id = $(self).data('id');
     var value = $(self).html();
     $('#form_for_'+model+' input[name=crud_changed]').val('1');
-    var url=window.location.href.split('?');
-    var url_get_data = '';
-    if (typeof url[1] != 'undefined') {
-        url_get_data = '?'+ url[1];
-    }
-    $.post( url[0] + "/maketdeditable"+url_get_data,    
-		{column: column,model: model,id: id, data: value} , 
+    $.post( window.location.href,    
+		{column: column,model: model,id: id, data: value,crud_action: "maketdeditable"} , 
 		function( data ) {
 	    $(self).html(data);
 	    $(self).children(":first").focus();
@@ -119,17 +110,13 @@ $('.container').on('click','.crud_save_btn', function (event) {
 var model = $(this).data('model');
 var form_data = $('#form_list_for_'+model).serializeArray();
 form_data.push({name: "model",value: model});
+form_data.push({name: "crud_action",value: "savelist"});
 $('#crud_save_cancel_panel_'+model).hide();
 $('#crud-ajax-loader-'+model).show();
 $('.crud_tr_'+model).removeClass('danger');
-var url=window.location.href.split('?');
-var url_get_data = '';
-if (typeof url[1] != 'undefined') {
-    url_get_data = '?'+ url[1];
-}
 $.ajax({
 type: "POST",
-url: url[0] + "/savelist"+url_get_data,
+url: window.location.href,
 data: form_data,
 dataType: "json"
 })
@@ -159,13 +146,8 @@ var id = $(this).data('id');
 var model = $(this).data('model');
 var filter_count = $('#form_for_'+model+' input[name=crud_filters_count]').val();
 filter_count = parseInt( filter_count ) + 1;
-var url=window.location.href.split('?');
-var url_get_data = '';
-if (typeof url[1] != 'undefined') {
-  url_get_data = '?'+ url[1];
-}
-$.post( url[0] + "/addfilter"+url_get_data,
-        {id: id,model: model,i: filter_count } , 
+$.post( window.location.href,
+        {id: id,model: model,i: filter_count,crud_action: "addfilter" } , 
         function( data ) {
         $('#crud_'+model+'_filters').append(data);
         $('#form_for_'+model+' input[name=crud_filters_count]').val(filter_count);
@@ -204,7 +186,24 @@ $('#crud_'+model+'_filters_panel').show();
 
 });
 
-
-
+//---Selector--------
+$('.container').on('change','.crud_filter_selector', function (event) {
+    var i = $(this).data('i');
+    var model = $(this).data('model');
+    var selector = $(this).find(':selected').text();
+    if (selector == 'between') {
+        if($('#crud_filter_data_'+model+'_'+i).hasClass('col-sm-6')) {
+            $('#crud_filter_data_'+model+'_'+i).removeClass('col-sm-6');
+            $('#crud_filter_data_'+model+'_'+i).addClass('col-sm-3');
+            $('#crud_filter_data2_'+model+'_'+i).show();
+        }
+    } else {
+        if($('#crud_filter_data_'+model+'_'+i).hasClass('col-sm-3')) {
+            $('#crud_filter_data_'+model+'_'+i).removeClass('col-sm-3');
+            $('#crud_filter_data_'+model+'_'+i).addClass('col-sm-6');
+            $('#crud_filter_data2_'+model+'_'+i).hide();
+        }
+    }
+});
 
 });	

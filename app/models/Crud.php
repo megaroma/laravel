@@ -28,11 +28,14 @@ class Crud {
 		foreach($filters as $filter) {
 			$field = key($filter);
 			$selector = $filter[$field]['selector'];
-			$data = $filter[$field]['data'];
+			//$data = $filter[$field]['data'];
+			$data = array_get($filter,$field.'.data', '');
+			$data2 = array_get($filter,$field.'.data2', '');
 			if($data != '') {
 				$code = self::$selectors[$selector]['code'];
 				$code = str_replace("{field}", $field, $code);
 				$code = str_replace("{data}", DB::connection()->getPdo()->quote($data), $code);
+				$code = str_replace("{data2}", DB::connection()->getPdo()->quote($data2), $code);
 				$sql_arr[] = $code;
 				//$sql_arr[] = $field.' '.self::$selectors[$selector]['code'].' '.DB::connection()->getPdo()->quote($data);  
 			}
@@ -48,7 +51,7 @@ class Crud {
 		$status = "";
 		foreach($filters as $filter) {
 			$field = key($filter);
-			if(isset($filters_map[$field]) && ($filters_map[$field]['type'] != 'static') ) {
+			if(isset($filters_map[$field]) && ($filters_map[$field]['type'] != 'static') && ($filter[$field]['data'] != '') ) {
 				$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' ";
 			}
 		}

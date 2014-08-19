@@ -61,7 +61,7 @@ public $filters = array(
 			),
 		'created_at' => array(
 			'title' => 'Created',
-			'selectors' => 'dt_equal',
+			'selectors' => 'dt_btw,dt_equal',
 			'type' => 'date'
 
 			),
@@ -79,7 +79,7 @@ public $filters = array(
 	);
 
 
-public function getIndex() {
+public function anyIndex() {
 	$data = array(
 		'crud_title' => 'Testing',
 		'crud_model' => 'Campaign',
@@ -92,6 +92,8 @@ public function getIndex() {
 		);
 
 	$data['filters'] = $this->filters['Campaign'];
+
+	if($res = $this->initCrud()) return $res;
 
 	$this->layout->content = \View::make('crud.view',$data);	
 }
