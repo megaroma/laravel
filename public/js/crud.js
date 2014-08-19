@@ -3,7 +3,7 @@ $( document ).ready(function() {
 //--------Submit------
 $(".crud_form").submit(function( event ) {
 var form_id = $(this).attr('id');	
-var model = form_id.split('_')[2];
+var model = form_id.replace('form_for_','');
 var form_data = $('#'+form_id).serializeArray();
 form_data.push({name: "crud_action",value: "getlist"});
 //var page = $('#'+form_id+' input[name=crud_page]').val();

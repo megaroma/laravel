@@ -31,10 +31,17 @@ Route::group(
     array('prefix' => 'admin'), 
     function() {
         Route::controller('admin', 'Admin\AdminController');
+    }    
+);
+
+
+Route::group(
+    array('prefix' => 'reports'), 
+    function() {
+        Route::controller('agentdispoappttotals', 'Reports\AgentDispoApptTotalsController');
     }
 );
 
 
 
-
-Route::resource('home/{id?}', 'HomeController@showWelcome');
+//Route::resource('home/{id?}', 'HomeController@showWelcome');

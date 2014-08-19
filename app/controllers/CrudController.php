@@ -22,20 +22,22 @@ class CrudController extends Controller {
 		$data['order'] = $order;
 
 		$filters = $this->check_filters($model,$filters);
-		$model_data = $model::get_list($filters,$order,$sort,$page); 
+		$model_run = str_replace('_', '\\', $model);
+		$model_data = $model_run::get_list($filters,$order,$sort,$page); 
 		$data['format'] = isset($this->format[$model]) ? $this->format[$model] : '';
 		if ($data['format'] == '') return "Error"; 
 		if (count($model_data['list']) < 1) return "No data"; 
 
 		foreach ($model_data['list'] as $i => $row) {
 			foreach ($row as $k => $v) {
-				if(!array_key_exists($k,$data['format']) ) continue;
-				$v=preg_replace_callback('/{([^}.\n]+)}/m',
+				if(array_key_exists($k,$data['format']) ) {
+					$v=preg_replace_callback('/{([^}.\n]+)}/m',
                                         function ($pok) use ($row) {
                                         	return $row[$pok[1]];
                                         }
                                         ,
 										$data['format'][$k]['value']);
+				}
 
 				$data['list'][$i][$k] = $v;
 			}
@@ -62,7 +64,8 @@ class CrudController extends Controller {
 			if ($format == '') return $data;
 			if(isset($format[$column]['editable'])) {
 				$type = isset($format[$column]['editable']['type']) ? $format[$column]['editable']['type'] : 'textarea';
-				$item = $model::find($id);
+				$model_run = str_replace('_', '\\', $model);
+				$item = $model_run::find($id);
 				$input_data['value'] = $item[$column];
 				$input_data['id'] = $id;
 				$input_data['column'] = $column;
@@ -107,8 +110,9 @@ class CrudController extends Controller {
 			}
 
 			//save
+			$model_run = str_replace('_', '\\', $model);
 			foreach ($data as $id => $d) {
-				$item = $model::find($id);
+				$item = $model_run::find($id);
 				foreach ($d as $column => $value) {
 					$item->$column = $value;
 				}
