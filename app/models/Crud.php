@@ -23,6 +23,14 @@ class Crud {
 		return $data;
 	}
 
+	public static function get_selector_code($field,$selector,$data,$data2 = '') {
+		$code = self::$selectors[$selector]['code'];
+		$code = str_replace("{field}", $field, $code);
+		$code = str_replace("{data}", DB::connection()->getPdo()->quote($data), $code);
+		$code = str_replace("{data2}", DB::connection()->getPdo()->quote($data2), $code);
+		return $code;
+	}	
+
 	public static function get_filters_sql($filters) {
 		$sql_arr = array();
 		foreach($filters as $filter) {
@@ -32,11 +40,7 @@ class Crud {
 			$data = array_get($filter,$field.'.data', '');
 			$data2 = array_get($filter,$field.'.data2', '');
 			if($data != '') {
-				$code = self::$selectors[$selector]['code'];
-				$code = str_replace("{field}", $field, $code);
-				$code = str_replace("{data}", DB::connection()->getPdo()->quote($data), $code);
-				$code = str_replace("{data2}", DB::connection()->getPdo()->quote($data2), $code);
-				$sql_arr[] = $code;
+				$sql_arr[] = self::get_selector_code($field,$selector,$data,$data2);
 				//$sql_arr[] = $field.' '.self::$selectors[$selector]['code'].' '.DB::connection()->getPdo()->quote($data);  
 			}
 		}
@@ -57,8 +61,14 @@ class Crud {
 					$res_mod = $filters_map[$field]['resource'];
 					$item = $res_mod::find($filter[$field]['data']);
 					$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$item['name']."' <br>";
+				} elseif ($filters_map[$field]['type'] == 'checkbox') {
+					$status .= $filters_map[$field]['title'].'<br>';
 				} else {
-					$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' <br>";
+					if(self::$selectors[$filter[$field]['selector']]['name'] == 'between') {
+						$status .= $filters_map[$field]['title'].' '.self::$selectors[$filter[$field]['selector']]['name']." '".$filter[$field]['data']."' and '".$filter[$field]['data2']."' <br>";
+					} else {
+						$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' <br>";
+					}					
 				}
 			}
 		}

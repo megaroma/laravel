@@ -19,11 +19,13 @@ if (changed == 1 ) {
 	}
 }
 $('#crud-ajax-loader-'+model).show();
+$('#crud-ajax-top-loader-'+model).show();
 $.post( window.location.href,
 		//{page: page,sort: sort, order: order,model: model} , 
         form_data,
 		function( data ) {
 	$('#list_for_'+model).html(data);
+    $('#crud-ajax-top-loader-'+model).hide();   
     var filters_status = $('#crud_'+model+'_list_filters_status').val();
     if(filters_status == "") {
         $('#crud_'+model+'_filters_status').text('Not filtered');
@@ -113,6 +115,7 @@ form_data.push({name: "model",value: model});
 form_data.push({name: "crud_action",value: "savelist"});
 $('#crud_save_cancel_panel_'+model).hide();
 $('#crud-ajax-loader-'+model).show();
+$('#crud-ajax-top-loader-'+model).show();
 $('.crud_tr_'+model).removeClass('danger');
 $.ajax({
 type: "POST",
@@ -127,13 +130,15 @@ if(data.status == 'ok') {
 } else {
 	$('#crud_save_cancel_panel_'+model).show();
 	$('#crud-ajax-loader-'+model).hide();
+    $('#crud-ajax-top-loader-'+model).hide();
     $('#crud_tr_'+model+'_'+data.row_id).addClass('danger');
     alert(data.message);
 }
 
 }).fail(function() {
 $('#crud_save_cancel_panel_'+model).show();
-$('#crud-ajax-loader-'+model).hide();	
+$('#crud-ajax-loader-'+model).hide();
+$('#crud-ajax-top-loader-'+model).hide();	
 alert("Something Went Wrong. Please Try again Later" );
 });
 return false;

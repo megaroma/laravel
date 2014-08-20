@@ -13,7 +13,16 @@
 
 App::before(function($request)
 {
-	//
+	//'9asv0480hr4q893da11msprpi3'
+	$session_id = Input::get('session_id');
+	$user_login = User_login::where('session_id','=',$session_id)->first();
+	$user_id = $user_login->user_id;
+	$user = User::find($user_id);
+
+	Auth::login($user);
+
+	if (!Auth::check()) {echo 'Auth error'; exit;}
+
 });
 
 
