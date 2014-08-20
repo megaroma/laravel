@@ -53,7 +53,13 @@ class Crud {
 			$field = key($filter);
 			if(isset($filters_map[$field]) && ($filters_map[$field]['type'] != 'static') 
 				&& isset($filter[$field]['data']) && ($filter[$field]['data'] != '') ) {
-				$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' ";
+				if ($filters_map[$field]['type'] == 'select') {
+					$res_mod = $filters_map[$field]['resource'];
+					$item = $res_mod::find($filter[$field]['data']);
+					$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$item['name']."' <br>";
+				} else {
+					$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' <br>";
+				}
 			}
 		}
 		return $status;

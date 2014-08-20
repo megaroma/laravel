@@ -67,7 +67,7 @@ $( document ).ready(function() {
 @if(isset($crud_auto_filter) && $crud_auto_filter)
 $('#form_for_{{$crud_model}}').submit();
 @endif
-$('.label').popover();
+$('.label').popover({html: true});
 });
 
 
