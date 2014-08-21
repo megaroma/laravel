@@ -6,7 +6,7 @@ class Crud {
 		'<' => array('name' => '<', 'code' => '{field} < {data}' ),
 		'>' => array('name' => '>', 'code' => '{field} > {data}' ),
 		'btw' => array('name' => 'between', 'code' => '{field} between {data} and {data2}' ),		
-		'dt_btw' => array('name'=> 'between', 'code' => "DATE({field}) between STR_TO_DATE({data},'%m/%d/%Y') and STR_TO_DATE({data2},'%m/%d/%Y') "),		
+		'dt_btw' => array('name'=> 'between', 'code' => " {field} between STR_TO_DATE(CONCAT({data},' 00:00:00'),'%m/%d/%Y %H:%i:%s') and STR_TO_DATE(CONCAT({data2},' 23:59:59'),'%m/%d/%Y %H:%i:%s') "),		
 		'dt_equal' => array('name'=> '=', 'code' => "DATE({field}) = STR_TO_DATE({data},'%m/%d/%Y') ")		
 
 		);
@@ -36,9 +36,11 @@ class Crud {
 		foreach($filters as $filter) {
 			$field = key($filter);
 			$selector = $filter[$field]['selector'];
+
 			//$data = $filter[$field]['data'];
-			$data = array_get($filter,$field.'.data', '');
-			$data2 = array_get($filter,$field.'.data2', '');
+			$data = array_get($filter[$field],'data', '');
+			$data2 = array_get($filter[$field],'data2', '');
+
 			if($data != '') {
 				$sql_arr[] = self::get_selector_code($field,$selector,$data,$data2);
 				//$sql_arr[] = $field.' '.self::$selectors[$selector]['code'].' '.DB::connection()->getPdo()->quote($data);  

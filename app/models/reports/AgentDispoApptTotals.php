@@ -84,6 +84,7 @@ c.id = ?
 ,array($start_date,$end_date,$customer_id)
 	);
 
+
 $res_total = \DB::select(
 'SELECT 
 count(*) as `total`

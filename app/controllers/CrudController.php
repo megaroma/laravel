@@ -31,12 +31,17 @@ class CrudController extends Controller {
 		foreach ($model_data['list'] as $i => $row) {
 			foreach ($row as $k => $v) {
 				if(array_key_exists($k,$data['format']) ) {
-					$v=preg_replace_callback('/{([^}.\n]+)}/m',
+					$format_value = $data['format'][$k]['value'];
+					if(is_callable($format_value)) {
+						$v = $format_value($row); 
+					} else {
+						$v=preg_replace_callback('/{([^}.\n]+)}/m',
                                         function ($pok) use ($row) {
                                         	return $row[$pok[1]];
                                         }
                                         ,
-										$data['format'][$k]['value']);
+										$format_value);
+					}
 				}
 
 				$data['list'][$i][$k] = $v;
@@ -72,7 +77,17 @@ class CrudController extends Controller {
 				$input_data['type'] = $type;
 				if($type == 'select') {
 					$model = $format[$column]['editable']['resource'];
-					$input_data['resource'] = $model::all();
+					if(is_array($model)) {
+						foreach($model as $d) {
+							if (is_array($d) ) {
+								$input_data['resource'][] = (object) array('id' => $d['id'],'name' => $d['name']);
+							} else {
+								$input_data['resource'][] = (object) array('id' => $d,'name' => $d);
+							}
+						}
+					} else {
+						$input_data['resource'] = $model::all();
+					}
 				}
 				return View::make('crud.input',$input_data);
 			} else {

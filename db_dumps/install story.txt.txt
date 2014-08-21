@@ -10,3 +10,10 @@ Just add
 and enter composer update. This way the library will be "installed"
  and you can use it as normal (for example $objPHPExcel = new PHPExcel();) 
 No need for manual includes etc.
+
+
+
+
+
+http://beltone.impactservices.biz
+eholley  belblue

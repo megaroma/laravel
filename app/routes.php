@@ -42,6 +42,12 @@ Route::group(
     }
 );
 
+Route::group(
+    array('prefix' => 'tmamanager'), 
+    function() {
+        Route::controller('managelists', 'Tmamanager\ManageListsController');
+    }
+);
 
 
 //Route::resource('home/{id?}', 'HomeController@showWelcome');

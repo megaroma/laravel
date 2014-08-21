@@ -40,7 +40,7 @@ press the plus button to add filters." data-trigger="hover" title="Not filtered"
     @if((isset($filters))&&(count($filters)>0))
     <div class="dropdown btn-group">
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownmenu" data-toggle="dropdown">
-            Add filter
+            Criteria
             <span class="caret"></span>
         </button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownmenu">
@@ -58,7 +58,7 @@ press the plus button to add filters." data-trigger="hover" title="Not filtered"
     @endif
 
             @if((isset($crud_filter_button)) && $crud_filter_button)
-            <button class="crud_filter_btn btn btn-primary" data-model="{{$crud_model}}">Run</button>
+            <button class="crud_filter_btn btn btn-primary" data-model="{{$crud_model}}">Run Report</button>
             @endif
 
         </div>

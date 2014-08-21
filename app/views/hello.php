@@ -40,6 +40,11 @@
 		<a href="http://localhost:8080/laravel-master/reports/agentdispoappttotals?session_id=9asv0480hr4q893da11msprpi3">
 			TMA Campaign Disposition and Appointment Totals
 		</a><br>
+
+		<a href="http://localhost:8080/laravel-master/tmamanager/managelists/active?session_id=9asv0480hr4q893da11msprpi3">
+			TMA Manager -> Manage Active Lists
+		</a><br>
+
 	</div>
 </body>
 </html>

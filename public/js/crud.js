@@ -38,6 +38,7 @@ $.post( window.location.href,
     }
     $('#crud_'+model+'_show_filters_panel').show();
     $('#crud_'+model+'_filters_panel').hide();
+    $('.has_popover').popover({html: true});
 
 });
 event.preventDefault();
