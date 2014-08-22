@@ -22,7 +22,7 @@ press the plus button to add filters." data-trigger="hover" title="Not filtered"
 </div>
   <!--<div class="panel-body">-->
     {{ Form::open(array('class'=>'crud_form form-horizontal','id' => 'form_for_'.$crud_model , 'role' => 'form' )) }}
-    <div class="row" id="crud_{{$crud_model}}_filters_panel" style="display:none;">
+    <div class="row" id="crud_{{$crud_model}}_filters_panel" style="padding:15px; display:none;">
 
     	{{ Form::hidden('crud_model', $crud_model ) }}
     	{{ Form::hidden('crud_sort', $crud_sort ) }}
