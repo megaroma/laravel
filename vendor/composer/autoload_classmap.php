@@ -9,6 +9,7 @@ return array(
     'Admin\\AdminController' => $baseDir . '/app/controllers/admin/AdminController.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'Campaign' => $baseDir . '/app/models/Campaign.php',
+    'Campaign_prospect' => $baseDir . '/app/models/Campaign_prospect.php',
     'Crud' => $baseDir . '/app/models/Crud.php',
     'CrudController' => $baseDir . '/app/controllers/CrudController.php',
     'CrudModel' => $baseDir . '/app/traits/CrudModel.php',

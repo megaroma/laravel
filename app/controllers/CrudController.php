@@ -22,7 +22,8 @@ class CrudController extends Controller {
 		$data['order'] = $order;
 
 		$filters = $this->check_filters($model,$filters);
-		$model_run = str_replace('_', '\\', $model);
+		//$model_run = str_replace('_', '\\', $model);
+		$model_run = Crud::get_model_name($model);
 		$model_data = $model_run::get_list($filters,$order,$sort,$page); 
 		$data['format'] = isset($this->format[$model]) ? $this->format[$model] : '';
 		if ($data['format'] == '') return "Error"; 
@@ -69,7 +70,8 @@ class CrudController extends Controller {
 			if ($format == '') return $data;
 			if(isset($format[$column]['editable'])) {
 				$type = isset($format[$column]['editable']['type']) ? $format[$column]['editable']['type'] : 'textarea';
-				$model_run = str_replace('_', '\\', $model);
+				//$model_run = str_replace('_', '\\', $model);
+				$model_run = Crud::get_model_name($model);
 				$item = $model_run::find($id);
 				$input_data['value'] = $item[$column];
 				$input_data['id'] = $id;
@@ -125,7 +127,8 @@ class CrudController extends Controller {
 			}
 
 			//save
-			$model_run = str_replace('_', '\\', $model);
+			//$model_run = str_replace('_', '\\', $model);
+			$model_run = Crud::get_model_name($model);
 			foreach ($data as $id => $d) {
 				$item = $model_run::find($id);
 				foreach ($d as $column => $value) {
@@ -155,7 +158,7 @@ class CrudController extends Controller {
 					$data['resource'] = $r_model::all();
 				} 
 				$data['selectors'] = Crud::get_selectors($filter['selectors']);
-				if ($data['selectors'][0]['name'] == 'between') {
+				if ($data['selectors'][0]['name'] == 'Between') {
 					$data['data2_style'] = "";
 					$data['data_class'] = "col-sm-3";
 				} else {

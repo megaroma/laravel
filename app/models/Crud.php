@@ -1,13 +1,13 @@
 <?php
 class Crud {
 	public static $selectors = array(
-		'=' => array('name' => '=', 'code' => '{field} = {data}' ),
-		'!=' => array('name' => '!=', 'code' => '{field} <> {data}' ),
-		'<' => array('name' => '<', 'code' => '{field} < {data}' ),
-		'>' => array('name' => '>', 'code' => '{field} > {data}' ),
-		'btw' => array('name' => 'between', 'code' => '{field} between {data} and {data2}' ),		
-		'dt_btw' => array('name'=> 'between', 'code' => " {field} between STR_TO_DATE(CONCAT({data},' 00:00:00'),'%m/%d/%Y %H:%i:%s') and STR_TO_DATE(CONCAT({data2},' 23:59:59'),'%m/%d/%Y %H:%i:%s') "),		
-		'dt_equal' => array('name'=> '=', 'code' => "DATE({field}) = STR_TO_DATE({data},'%m/%d/%Y') ")		
+		'=' => array('name' => 'Equal To', 'code' => '{field} = {data}' ),
+		'!=' => array('name' => 'Not Equal To', 'code' => '{field} <> {data}' ),
+		'<' => array('name' => 'Less Than', 'code' => '{field} < {data}' ),
+		'>' => array('name' => 'Greater Than', 'code' => '{field} > {data}' ),
+		'btw' => array('name' => 'Between', 'code' => '{field} between {data} and {data2}' ),		
+		'dt_btw' => array('name'=> 'Between', 'code' => " {field} between STR_TO_DATE(CONCAT({data},' 00:00:00'),'%m/%d/%Y %H:%i:%s') and STR_TO_DATE(CONCAT({data2},' 23:59:59'),'%m/%d/%Y %H:%i:%s') "),		
+		'dt_equal' => array('name'=> 'Equal To', 'code' => "DATE({field}) = STR_TO_DATE({data},'%m/%d/%Y') ")		
 
 		);
 
@@ -62,14 +62,14 @@ class Crud {
 				if ($filters_map[$field]['type'] == 'select') {
 					$res_mod = $filters_map[$field]['resource'];
 					$item = $res_mod::find($filter[$field]['data']);
-					$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$item['name']."' <br>";
+					$status .= $filters_map[$field]['title'].' '.self::$selectors[$filter[$field]['selector']]['name']." '".$item['name']."' <br>";
 				} elseif ($filters_map[$field]['type'] == 'checkbox') {
 					$status .= $filters_map[$field]['title'].'<br>';
 				} else {
-					if(self::$selectors[$filter[$field]['selector']]['name'] == 'between') {
+					if(self::$selectors[$filter[$field]['selector']]['name'] == 'Between') {
 						$status .= $filters_map[$field]['title'].' '.self::$selectors[$filter[$field]['selector']]['name']." '".$filter[$field]['data']."' and '".$filter[$field]['data2']."' <br>";
 					} else {
-						$status .= $filters_map[$field]['title'].self::$selectors[$filter[$field]['selector']]['name']."'".$filter[$field]['data']."' <br>";
+						$status .= $filters_map[$field]['title'].' '.self::$selectors[$filter[$field]['selector']]['name']." '".$filter[$field]['data']."' <br>";
 					}					
 				}
 			}
@@ -95,6 +95,26 @@ class Crud {
 			}
 		}
 		return $data;
+	}
+
+	public static function get_model_name($model) {
+		if(strpos(' '.$model,'_')) {
+			$arr = explode("_", $model);
+			$data = '';
+			foreach($arr as $i => $d) {
+				$data .= $d;
+				if(isset($arr[$i+1])) {
+					if(ctype_upper(substr($arr[$i+1],0,1))) {
+						$data .= '\\';
+					} else {
+						$data .= '_';
+					}
+				}
+			} 
+			return $data;
+		} else {
+			return $model;
+		}
 	}
 
 }

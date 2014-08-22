@@ -28,6 +28,7 @@
 
 <div class="container">
 	@yield('content')
+	@yield('footer')
 </div>
 
 

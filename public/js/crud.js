@@ -197,7 +197,7 @@ $('.container').on('change','.crud_filter_selector', function (event) {
     var i = $(this).data('i');
     var model = $(this).data('model');
     var selector = $(this).find(':selected').text();
-    if (selector == 'between') {
+    if (selector == 'Between') {
         if($('#crud_filter_data_'+model+'_'+i).hasClass('col-sm-6')) {
             $('#crud_filter_data_'+model+'_'+i).removeClass('col-sm-6');
             $('#crud_filter_data_'+model+'_'+i).addClass('col-sm-3');
@@ -210,6 +210,23 @@ $('.container').on('change','.crud_filter_selector', function (event) {
             $('#crud_filter_data2_'+model+'_'+i).hide();
         }
     }
+});
+
+
+//---show more ----------------------------------
+$('.container').on('click','.crud_show_more', function (event) {
+event.preventDefault();
+$(this).next().show();
+$(this).hide();
+return false;
+});
+
+//---show less ----------------------------------
+$('.container').on('click','.crud_show_less', function (event) {
+event.preventDefault();
+$(this).parent().prev().show();
+$(this).parent().hide();
+return false;
 });
 
 });	

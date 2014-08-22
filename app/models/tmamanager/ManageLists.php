@@ -21,12 +21,15 @@ c.id,
 0 AS ttl_complete, 
 0 AS ttl_readytocall, 
 0 AS ttl_nevercalled, 
-NOW() AS last_disposition, 
 c.name, 
 u.name AS `agentname`, 
 c.assigned_user_id, 
 c.priority,
-c.created_at, 
+DATE_FORMAT(c.created_at,'%m-%d-%Y') as created_at, 
+DATE_FORMAT(
+	NOW()
+,'%m-%d-%Y')
+	 AS last_disposition, 
 i.name AS image_name,
 i.mime, 
 i.size 
