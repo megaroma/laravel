@@ -17,3 +17,13 @@ No need for manual includes etc.
 
 http://beltone.impactservices.biz
 eholley  belblue
+
+
+
+
+----------------
+
+model has to have id 
+
+if hidden filter has 'title' , it appers in status
+

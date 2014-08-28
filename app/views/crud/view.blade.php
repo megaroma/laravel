@@ -45,7 +45,7 @@ press the plus button to add filters." data-trigger="hover" title="Not filtered"
         </button>
         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownmenu">
             @foreach($filters as $id => $filter)
-            @if($filter['type'] != 'static')
+            @if(($filter['type'] != 'static') && ($filter['type'] != 'hidden'))
             <li role="presentation">
                 <a role="menuitem" tabindex="-1" href="#" class="crud_add_filter" data-id="{{$id}}" data-model="{{$crud_model}}">
                     {{$filter['title']}}
@@ -64,6 +64,15 @@ press the plus button to add filters." data-trigger="hover" title="Not filtered"
         </div>
     </div>
 </div>
+<?php $i = 0; ?>
+@foreach($filters as $id => $filter)
+@if($filter['type'] == 'hidden')
+<?php $i++; ?>
+    <input type="hidden" name="filter[{{$i}}][{{$id}}][selector]" value="{{$filter['selector']}}" >
+    <input type="hidden" class="crud_hidden_filter_{{$id}}"  name="filter[{{$i}}][{{$id}}][data]" value="{{$filter['value']}}">    
+@endif
+@endforeach
+
     {{ Form::close() }}
   <!--</div>-->
 </div>

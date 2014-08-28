@@ -75,7 +75,14 @@ public $filters = array(
 			'selectors' => '=',
 			'type' => 'checkbox'
 
-			)		
+			)
+					,'assigned_user_id' => array(
+						'title' => 'User', //for status
+			'selector' => '=',
+			'type' => 'hidden',
+			'value' => '1'
+
+			),		
 
 
 

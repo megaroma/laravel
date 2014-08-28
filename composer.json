@@ -5,7 +5,8 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*",
-		 "phpexcel/phpexcel": "dev-master"
+		 "phpexcel/phpexcel": "dev-master",
+		 "nesbot/Carbon": "*"
 	},
 	"autoload": {
 		"classmap": [

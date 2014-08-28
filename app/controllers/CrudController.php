@@ -154,8 +154,24 @@ class CrudController extends Controller {
 				$data['id'] = $id;
 				$data['i'] = $i;
 				if(($filter['type'] == 'select') && (isset($filter['resource']))) {
-					$r_model = $filter['resource'];
-					$data['resource'] = $r_model::all();
+					if(is_array($filter['resource'])) {
+						foreach($filter['resource'] as $d) {
+							if (is_array($d) ) {
+								$data['resource'][] = (object) array('id' => $d['id'],'name' => $d['name']);
+							} else {
+								$data['resource'][] = (object) array('id' => $d,'name' => $d);
+							}
+						}
+					} else {					
+						$r_model  = explode("|", $filter['resource']);
+						$model_name = $r_model[0];
+						if (isset($r_model[1])) {
+							$where_sql = $r_model[1];
+							$data['resource'] = $model_name::whereRaw($where_sql)->get();
+						} else {
+							$data['resource'] = $model_name::all();
+						}
+					}
 				} 
 				$data['selectors'] = Crud::get_selectors($filter['selectors']);
 				if ($data['selectors'][0]['name'] == 'Between') {

@@ -3,6 +3,10 @@ class Crud {
 	public static $selectors = array(
 		'=' => array('name' => 'Equal To', 'code' => '{field} = {data}' ),
 		'!=' => array('name' => 'Not Equal To', 'code' => '{field} <> {data}' ),
+		'like' => array('name' => 'Contains', 'code' => '{field} like CONCAT(\'%\',{data},\'%\')' ),
+		'not_like' => array('name' => 'Not Contains', 'code' => '{field} not like CONCAT(\'%\',{data},\'%\')' ),
+		'start_like' => array('name' => 'Starts With', 'code' => '{field} like CONCAT({data},\'%\')' ),
+		'end_like' => array('name' => 'Ends With', 'code' => '{field} like CONCAT(\'%\',{data})' ),
 		'<' => array('name' => 'Less Than', 'code' => '{field} < {data}' ),
 		'>' => array('name' => 'Greater Than', 'code' => '{field} > {data}' ),
 		'btw' => array('name' => 'Between', 'code' => '{field} between {data} and {data2}' ),		
@@ -58,7 +62,8 @@ class Crud {
 		foreach($filters as $filter) {
 			$field = key($filter);
 			if(isset($filters_map[$field]) && ($filters_map[$field]['type'] != 'static') 
-				&& isset($filter[$field]['data']) && ($filter[$field]['data'] != '') ) {
+				&& isset($filter[$field]['data']) && ($filter[$field]['data'] != '') 
+				&& isset($filters_map[$field]['title'])) {
 				if ($filters_map[$field]['type'] == 'select') {
 					$res_mod = $filters_map[$field]['resource'];
 					$item = $res_mod::find($filter[$field]['data']);

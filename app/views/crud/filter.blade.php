@@ -1,4 +1,4 @@
-<div class="form-group" id="crud_filter_{{$model}}_{{$i}}">
+<div class="crud_filters_{{$model}} form-group" id="crud_filter_{{$model}}_{{$i}}">
   @if($type == 'checkbox')
   <div class="col-sm-3">{{$name}}</div><input type="hidden" name="filter[{{$i}}][{{$id}}][selector]" value="{{$selectors[0]['id']}}" >
   @else

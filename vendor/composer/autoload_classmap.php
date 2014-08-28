@@ -21,6 +21,7 @@ return array(
     'Reports\\AgentDispoApptTotals' => $baseDir . '/app/models/reports/AgentDispoApptTotals.php',
     'Reports\\AgentDispoApptTotalsController' => $baseDir . '/app/controllers/reports/AgentDispoApptTotalsController.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
+    'Symfony\\Component\\HttpFoundation\\Resources\\stubs\\FakeFile' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/FakeFile.php',
     'TestCase' => $baseDir . '/app/tests/TestCase.php',
     'Tmamanager\\ManageLists' => $baseDir . '/app/models/tmamanager/ManageLists.php',
     'Tmamanager\\ManageListsController' => $baseDir . '/app/controllers/tmamanager/ManageLists.php',

@@ -17,25 +17,28 @@ $limit_sql = "LIMIT ".(($page-1)*$per_page)." , ".($per_page);
 $sql = "
 SELECT 
 c.id,
-0 AS ttl_list, 
-0 AS ttl_complete, 
-0 AS ttl_readytocall, 
-0 AS ttl_nevercalled, 
+c.id as list_id,
 c.name, 
+1 as info,
+cs.total_prospects AS ttl_list, 
+cs.total_complete AS ttl_complete, 
+cs.total_ready_to_call AS ttl_readytocall, 
+cs.total_never_called AS ttl_nevercalled, 
 u.name AS `agentname`, 
 c.assigned_user_id, 
 c.priority,
 DATE_FORMAT(c.created_at,'%m-%d-%Y') as created_at, 
 DATE_FORMAT(
-	NOW()
+	cs.last_disposition_date
 ,'%m-%d-%Y')
 	 AS last_disposition, 
 i.name AS image_name,
 i.mime, 
 i.size 
 FROM campaigns c 
-     LEFT OUTER JOIN images i ON c.direct_mail_piece_image_id = i.id 
-	 LEFT OUTER JOIN users u ON c.assigned_user_id = u.id  
+	LEFT OUTER JOIN campaign_statistics cs ON (cs.campaign_id = c.id)
+    LEFT OUTER JOIN images i ON c.direct_mail_piece_image_id = i.id 
+	LEFT OUTER JOIN users u ON c.assigned_user_id = u.id  
 WHERE 
 
 ".$filters_sql." ".$order_sql." ".$limit_sql;
