@@ -10,7 +10,37 @@
     </div>
   </div>
 </div>
-	
+
+
+<div class="modal fade" id="confDelete" tabindex="-1" role="dialog" aria-labelledby="confDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="confDeleteLabel">Delete Canpaign List</h4>
+      </div>
+      <div class="modal-body">
+        <h5 class="text-center text-primary">Delete Campaign List </h5>
+        <h4 class="text-center text-danger">** CAUTION **</h4>
+        <p class="text-left">You are about to delete records from the database. You will be deleting: </p>
+        <p class="text-left">
+            <span class="text-danger">*</span> The Campaign List <br>
+            <span class="text-danger">*</span> All prospects/users who were on that list <br>
+            <span class="text-danger">*</span> All campaign call records generated from the Campaign List <br>
+        </p>
+        <ul class="list-group">
+            <li class="list-group-item active text-center">Once these records are deleted, they cannot be retrieved.</li>
+        </ul>
+
+        <p class="text-left">The Campaign List about to be Deleted is: </p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel Delete</button>
+        <button type="button" class="btn btn-primary">Confirm Delete</button>
+      </div>
+    </div>
+  </div>
+</div>	
 
 
 
@@ -26,6 +56,13 @@ $('.container').on('click','.list_id', function (event) {
     $('.crud_filters_'+model).remove();
     $('#form_for_'+model).submit();
     $('#prospects_list').modal('show');
+    return false;
+});
+
+$('.container').on('click','.delete_c', function (event) {
+    event.preventDefault();
+    var id = $(this).data('id');
+    $('#confDelete').modal('show');
     return false;
 });
 

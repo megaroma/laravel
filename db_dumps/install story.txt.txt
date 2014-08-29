@@ -27,3 +27,18 @@ model has to have id
 
 if hidden filter has 'title' , it appers in status
 
+
+
+DELIMITER //
+CREATE PROCEDURE `deletecampaign`
+(IN customer_id INT(11),id INT(11))
+BEGIN
+	delete from  `campaigns` where `customer_id` = customer_id and `id` = id;
+END //
+DELIMITER ;
+
+DROP PROCEDURE `deletecampaign` ;
+
+CREATE DEFINER = `root`@`localhost` PROCEDURE `deletecampaign` ( IN `in_customer_id` INT( 11 ) , IN `in_id` INT( 11 ) ) NOT DETERMINISTIC CONTAINS SQL SQL SECURITY DEFINER BEGIN DELETE FROM `campaigns` WHERE `customer_id` = in_customer_id AND `id` = in_id;
+
+END 

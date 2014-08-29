@@ -15,7 +15,7 @@ $objPHPExcel->getProperties()->setCreator("WW Job Manager")
    ->setSubject("Site List")
    ->setDescription("Site List - ");
 
-$data[] = array('id' => 13,'Notes' => 'mega', 'Aaa' => 666, 'Bbbb' => 13, 'Cccc' => 'lll','Ddd' => 'ada' );
+$data[] = array('id' => 13,'Notes' => 'mega dgdf dfgdfgdf gdf gdf gdfg df gdf gdf gdf gdf gdf gdf gdf gdf gdf gdf g gdf gdf gdf gdf gd fg dfgdfg dfg df dfg dfg dfg df gdfg dfg ', 'Aaa' => 666, 'Bbbb' => 13, 'Cccc' => 'lll','Ddd' => 'ada' );
 $data[] = array('id' => 133,'Notes' => '24mega', 'Aaa' => 6466, 'Bbbb' => 143, 'Cccc' => 'l435ll','Ddd' => 'a5da' );
 $data[] = array('id' => 143,'Notes' => 'mega44', 'Aaa' => 6266, 'Bbbb' => 153, 'Cccc' => 'l3ll','Ddd' => 'a554da' );
 
@@ -39,7 +39,7 @@ foreach ($data as $row) {
       // in Column E
       if ($notes_column_idx == $i) {
          $objPHPExcel->getActiveSheet(0)
-            ->getComment('E'.$row_i)
+            ->getComment('E'.$row_i)->setHeight ('300px')->setWidth ('400px')
             ->setAuthor('WW AutoGen')
             ->getText()->createTextRun($col);
       }
@@ -60,7 +60,7 @@ $objPHPExcel->getActiveSheet(0)->setAutoFilter($alphas[0].'1:'.$alphas[$i].$row_
 $tmpfname = 'booo';
 //$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-$objWriter->save($tmpfname.'.xls');
+$objWriter->save($tmpfname.'.xlsx');
 
 
 

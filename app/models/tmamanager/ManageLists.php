@@ -34,7 +34,8 @@ DATE_FORMAT(
 	 AS last_disposition, 
 i.name AS image_name,
 i.mime, 
-i.size 
+i.size,
+1 as delete_campaign 
 FROM campaigns c 
 	LEFT OUTER JOIN campaign_statistics cs ON (cs.campaign_id = c.id)
     LEFT OUTER JOIN images i ON c.direct_mail_piece_image_id = i.id 

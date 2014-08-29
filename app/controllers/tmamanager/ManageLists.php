@@ -72,7 +72,10 @@ $this->format['Tmamanager_ManageLists'] = array (
 	'last_disposition' => array(
 		'title' => 'Last Disposition',
 		'value' => '{last_disposition}'
-		)
+		),
+	'delete_campaign' => array(
+		'title' => '',
+		'value' => '<button type="button" class="delete_c btn btn-danger btn-xs" data-id="{list_id}"><span class="glyphicon glyphicon-remove"></span> Delete</button>')
 	);
 
 $this->filters['Tmamanager_ManageLists'] = 
