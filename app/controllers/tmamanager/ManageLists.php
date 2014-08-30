@@ -13,11 +13,11 @@ public function __construct()
 $this->format['Tmamanager_ManageLists'] = array (
 	'list_id' => array(
 		'title' => 'List ID',
-		'value' => '<a href="#" >{list_id}</a>'
+		'value' => '<a href="http://beltone.impactservices.biz/show_direct_mail_piece/get_file.php?id={list_id}" >{list_id}</a>'
 		),
 	'info' => array(
 		'title' => '',
-		'value' => '<a href="#" class="list_id" data-model="Campaign_prospect" data-list_id="{list_id}" ><img src="'.\URL::to('public/pic/help-icon.png').'"></a>'
+		'value' => '<a href="#" class="list_id" data-model="Campaign_prospect" data-list_id="{list_id}" ><img title="Show Details - {name}" src="'.\URL::to('public/pic/help-icon.png').'"></a>'
 		),
 	'ttl_list' => array(
 		'title' => '',
