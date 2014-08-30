@@ -235,6 +235,8 @@ public function anyActive() {
 		'crud_filter_button' => true,
 		'crud_show_filters' => true
 		);
+	if(\Input::get('confirm_delete', false)) return $this->confirm_delete(\Input::get('id', ''));
+	if(\Input::get('delete_campaign', false)) return $this->delete_campaign(\Input::get('id', ''));
 
 	if(\Input::get('TMA', false)) {
 		$user_id = \Auth::user()->id;
@@ -288,6 +290,9 @@ public function anyArchive() {
 		'crud_show_filters' => true
 		);
 
+	if(\Input::get('confirm_delete', false)) return $this->confirm_delete(\Input::get('id', ''));
+	if(\Input::get('delete_campaign', false)) return $this->delete_campaign(\Input::get('id', ''));
+
 	if(\Input::get('TMA', false)) {
 		$user_id = \Auth::user()->id;
 		$this->filters['Tmamanager_ManageLists']['assigned_user_id']['value'] = $user_id;
@@ -324,6 +329,32 @@ public function anyArchive() {
 
 	$this->layout->footer = \View::make('tmamanager.managelists',$data2);
 
+}
+
+//------------------------------------
+public function confirm_delete($id) {
+	if($id == '') return 'Error';
+	$data = array();
+	$campaign = \Campaign::find($id);
+	$user = \User::find($campaign->assigned_user_id);
+	$data['name'] = $campaign->name;
+	$data['comment'] = $campaign->comment;
+	$data['agent'] = isset($user->name)?$user->name : '';
+
+
+	$data['priority'] = $campaign->priority;
+	$data['created'] = $campaign->created_at;
+	$user = \User::find($campaign->loaded_by_user_id);
+	$data['loaded'] = isset($user->name)?$user->name : '';
+	$data['orig'] = $campaign->uploaded_filename;
+
+	return \View::make('tmamanager.confirmdelete',$data);
+}
+
+public function delete_campaign($id) {
+	$customer_id = \Auth::user()->customer_id;
+	\DB::statement('call deletecampaign(' . \DB::raw($customer_id) . ',' . \DB::raw($id) . ')');	
+	return 'ok';
 }
 
 }

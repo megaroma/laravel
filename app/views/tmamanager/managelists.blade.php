@@ -13,7 +13,7 @@
 
 
 <div class="modal fade" id="confDelete" tabindex="-1" role="dialog" aria-labelledby="confDeleteLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -33,10 +33,13 @@
         </ul>
 
         <p class="text-left">The Campaign List about to be Deleted is: </p>
+        <div id="campaign_info"></div>
+
       </div>
       <div class="modal-footer">
+        {{ Form::hidden('campaign_id', '', array('id' => 'campaign_id')) }}
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel Delete</button>
-        <button type="button" class="btn btn-primary">Confirm Delete</button>
+        <button type="button" class="btn btn-primary" id="confirm_delete_btn">Confirm Delete</button>
       </div>
     </div>
   </div>
@@ -62,10 +65,28 @@ $('.container').on('click','.list_id', function (event) {
 $('.container').on('click','.delete_c', function (event) {
     event.preventDefault();
     var id = $(this).data('id');
+    $('#campaign_id').val(id);
+    $('#campaign_info').html('<img src="{{ URL::to('public/pic/ajax-loader.gif') }}" class="img-responsive">');
     $('#confDelete').modal('show');
+    $.post( window.location.href,
+        {id: id,confirm_delete: true } , 
+        function( data ) {
+        $('#campaign_info').html(data);
+    });
+
     return false;
 });
 
+$('#confirm_delete_btn').click(function(){
+    var id = $('#campaign_id').val();
+    $.post( window.location.href,
+        {id: id,delete_campaign: true } , 
+        function( data ) {
+        $('#confDelete').modal('hide');
+        $('#form_for_Tmamanager_ManageLists').submit();
+    });
+
+});
 
 </script>
 @stop
